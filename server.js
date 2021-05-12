@@ -64,7 +64,7 @@ app.post("/analyze", (req, res) => {
   };
  }
 
- res.status(200).send(result);
+ res.json(result);
 });
 
 app.options("*", function (req, res) {
