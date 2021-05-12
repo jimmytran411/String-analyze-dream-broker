@@ -33,10 +33,13 @@ jobs:
           command: npm test
 
 workflows:
-  version: 2.1
-    test_build:
-      jobs:
-        - test
+  # Below is the definition of your workflow.
+  # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
+  # CircleCI will run this workflow on every commit.
+  # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  sample: 
+    jobs:
+      - test
         - build:
           requires:
             - test
