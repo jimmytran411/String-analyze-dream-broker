@@ -20,36 +20,49 @@ app.use((req, res, next) => {
 app.post("/analyze", (req, res) => {
  const text = req.body.text;
 
- const withSpaces = text.length;
- const withoutSpaces = text
-  .toLowerCase()
-  .match(/[a-z0-9]+/g)
-  .join("").length;
+ let result;
 
- const wordCount = text.toLowerCase().match(/[a-z0-9]+/g).length;
+ if (!text.length) {
+  result = {
+   textLength: {
+    withSpaces: 0,
+    withoutSpaces: 0,
+   },
+   wordCount: 0,
+   characterCount: [],
+  };
+ } else {
+  const withSpaces = text.length;
+  const withoutSpaces = text
+   .toLowerCase()
+   .match(/[a-z0-9]+/g)
+   .join("").length;
 
- const textArray = text
-  .toLowerCase()
-  .match(/[a-z]+/g)
-  .flatMap((el) => el.split(""))
-  .sort();
+  const wordCount = text.toLowerCase().match(/[a-z0-9]+/g).length;
 
- const analyze = textArray
-  .reduce((mapObj, letter) => {
-   !mapObj.has(letter) && mapObj.set(letter, { [`${letter}`]: 0 });
-   const obj = mapObj.get(letter);
-   obj[`${letter}`]++;
+  const textArray = text
+   .toLowerCase()
+   .match(/[a-z]+/g)
+   .flatMap((el) => el.split(""))
+   .sort();
 
-   return mapObj;
-  }, new Map())
-  .values();
- const analyzeResult = [...analyze];
+  const analyze = textArray
+   .reduce((mapObj, letter) => {
+    !mapObj.has(letter) && mapObj.set(letter, { [`${letter}`]: 0 });
+    const obj = mapObj.get(letter);
+    obj[`${letter}`]++;
 
- const result = {
-  textLength: { withSpaces, withoutSpaces },
-  wordCount,
-  characterCount: analyzeResult,
- };
+    return mapObj;
+   }, new Map())
+   .values();
+  const analyzeResult = [...analyze];
+
+  result = {
+   textLength: { withSpaces, withoutSpaces },
+   wordCount,
+   characterCount: analyzeResult,
+  };
+ }
 
  res.status(200).send(result);
 });
