@@ -18,14 +18,23 @@ app.use((req, res, next) => {
 });
 
 app.get("/analyze", (req, res) => {
- const data = req.body;
- const textArray = data.text
+ const text = req.body.text;
+
+ const withSpaces = text.length;
+ const withoutSpaces = text
+  .toLowerCase()
+  .match(/[a-z0-9]+/g)
+  .join("").length;
+
+ const wordCount = text.toLowerCase().match(/[a-z0-9]+/g).length;
+
+ const textArray = text
   .toLowerCase()
   .match(/[a-z]+/g)
   .flatMap((el) => el.split(""))
   .sort();
 
- const analyzeResult = textArray
+ const analyze = textArray
   .reduce((mapObj, letter) => {
    !mapObj.has(letter) && mapObj.set(letter, { [`${letter}`]: 0 });
    const obj = mapObj.get(letter);
@@ -34,7 +43,13 @@ app.get("/analyze", (req, res) => {
    return mapObj;
   }, new Map())
   .values();
- const result = [...analyzeResult];
+ const analyzeResult = [...analyze];
+
+ const result = {
+  textLength: { withSpaces, withoutSpaces },
+  wordCount,
+  characterCount: analyzeResult,
+ };
 
  res.status(200).send(result);
 });
