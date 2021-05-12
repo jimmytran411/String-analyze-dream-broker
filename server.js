@@ -17,7 +17,7 @@ app.use((req, res, next) => {
  next();
 });
 
-app.get("/analyze", (req, res) => {
+app.post("/analyze", (req, res) => {
  const text = req.body.text;
 
  const withSpaces = text.length;
