@@ -67,26 +67,9 @@ app.post("/analyze", (req, res) => {
  res.json(result);
 });
 
-app.options("*", function (req, res) {
- res.send(200);
-});
-
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
  console.log(`server started on port ${PORT}`);
-});
-
-app.use((req, res) => {
- res.status(404).json({
-  message: "Route Not Found",
- });
-});
-
-app.use((err, req, res) => {
- res.status(err.status || 500).json({
-  message: err.message,
-  error: {},
- });
 });
 
 module.export = app;
