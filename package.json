@@ -5,17 +5,22 @@
  "main": "index.js",
  "scripts": {
   "test": "jest",
-  "start": "node server.js"
+  "start": "node server.js",
+  "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd frontend && npm install && npm run build",
+  "dev": "concurrently \"npm run server\" \"npm run frontend\"",
+  "frontend": "npm start --prefix frontend",
+  "server": "nodemon server.js"
  },
  "author": "",
  "license": "ISC",
  "dependencies": {
+  "concurrently": "^6.0.2",
   "express": "^4.17.1",
   "http": "0.0.1-security",
   "path": "^0.12.7"
  },
  "devDependencies": {
-  "jest": "^26.6.3",
+  "jest": "^26.6.0",
   "kcd-scripts": "^10.0.0"
  }
 }
