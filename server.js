@@ -27,6 +27,11 @@ app.post("/analyze", (req, res) => {
  res.json(result);
 });
 
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "frontend/build")));
+const root = path.join(__dirname, "frontend", "build");
+app.use(express.static(root));
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
  console.log(`server started on port ${PORT}`);
