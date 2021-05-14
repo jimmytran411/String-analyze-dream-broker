@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { List, ListItem } from '@material-ui/core';
 
 import { StringAnalyzerResult } from '../../api/stringAnalyzer';
 
@@ -12,34 +12,45 @@ export const Result: React.FC<ResultProps> = ({ result }: ResultProps) => {
     <>
       {result === 'loading' && 'loading'}
       {result && result !== 'loading' && (
-        <Grid container direction="column" spacing={2}>
-          <Grid item xs>
-            Text Length:
-            <Grid item xs>
-              With Spaces: <b>{result.textLength.withSpaces}</b>
-            </Grid>
-            <Grid item xs>
-              Without Spaces: <b>{result.textLength.withoutSpaces}</b>
-            </Grid>
-          </Grid>
-          <Grid item xs>
-            <span>
+        <List>
+          <ListItem>
+            <List>
+              Text Length:
+              <ListItem>
+                <span aria-label="text-length-with-spaces">
+                  With Spaces: <b>{result.textLength.withSpaces}</b>
+                </span>
+              </ListItem>
+              <ListItem>
+                <span aria-label="text-length-without-spaces">
+                  Without Spaces: <b>{result.textLength.withoutSpaces}</b>
+                </span>
+              </ListItem>
+            </List>
+          </ListItem>
+          <ListItem>
+            <span aria-label="word-count">
               Word Count: <b>{result.wordCount}</b>
             </span>
-          </Grid>
-          <Grid item xs>
-            Character Count:
-            {!result.characterCount.length && <b>0</b>}
-            {result.characterCount.map((pair: { [key: string]: number }, index: number) => {
-              const key: string = Object.keys(pair)[0];
-              return (
-                <Grid item xs key={index}>
-                  Letter {`"${key.toLocaleLowerCase()}"`}: <b>{pair[key]}</b>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Grid>
+          </ListItem>
+          <ListItem>
+            <List>
+              Character Count:
+              {!result.characterCount.length && <b>0</b>}
+              {result.characterCount.length &&
+                result.characterCount.map((pair: { [key: string]: number }, index: number) => {
+                  const key: string = Object.keys(pair)[0];
+                  return (
+                    <ListItem key={index}>
+                      <span>
+                        Letter <b>{`"${key.toLocaleLowerCase()}"`}</b>: <b>{pair[key]}</b>
+                      </span>
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </ListItem>
+        </List>
       )}
     </>
   );
