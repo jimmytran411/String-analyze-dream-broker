@@ -12,5 +12,5 @@ export interface StringAnalyzerResult {
 }
 
 export const analyseString = (stringToAnalyse: string): Promise<AxiosResponse<StringAnalyzerResult>> => {
-  return axios.post('https://string-analyzer-dream-broker.herokuapp.com/analyze', { text: stringToAnalyse });
+  return axios.post('/analyze', { text: stringToAnalyse });
 };
